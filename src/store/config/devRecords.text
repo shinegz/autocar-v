@@ -1,0 +1,4 @@
+webWorker:
+    现象描述：webWorker无法正常工作，Uncaught SyntaxError: Unexpected token '<'
+    原因：worker子线程脚本没有正确加载
+    解决方法：见util文件夹下的webworker

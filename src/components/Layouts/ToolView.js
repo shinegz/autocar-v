@@ -1,24 +1,23 @@
 import React from "react";
-// import { inject, observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 
 // import DataRecorder from "components/DataRecorder";
-import ModuleController from "../../components/ModuleController";
-// import Menu from "components/SideBar/Menu";
+import ModuleController from "../ModuleController";
+import Menu from "../SideBar/Menu";
 // import POI from "components/SideBar/POI";
-// import Tasks from "components/Tasks";
+import Tasks from "../Tasks";
 
-// @inject("store") @observer
+@inject("store") @observer
 export default class ToolView extends React.Component {
     render() {
-        // const { options, routeEditingManager, hmi, newDisengagementReminder } = this.props.store;
+        const { options } = this.props.store;
 
         return (
             <div className="tools">
-                <ModuleController />
-                {/* {options.showTasks && <Tasks options={options}/>}
+                {options.showTasks && <Tasks options={options}/>}
                 {options.showModuleController && <ModuleController />}
                 {options.showMenu && <Menu options={options} />}
-                {options.showPOI && (
+                {/* {options.showPOI && (
                     <POI
                         routeEditingManager={routeEditingManager}
                         options={options}
@@ -29,7 +28,7 @@ export default class ToolView extends React.Component {
                     <DataRecorder
                         newDisengagementReminder={newDisengagementReminder}
                     />
-                )} */}
+                )}  */}
             </div>
         );
     }

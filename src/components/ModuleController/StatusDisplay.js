@@ -13,7 +13,6 @@ const StatusColorMapping = {
 export default class StatusDisplay extends React.Component {
     constructor(props) {
         super(props);
-
         this.showStatusMessage = this.showStatusMessage.bind(this);
     }
 

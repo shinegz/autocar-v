@@ -1,0 +1,32 @@
+websocket通讯：
+
+类别: HMI实时数据
+数据类型：JSON
+客户端请求信息：
+        {
+            "type": "HMIStatus"
+        }
+服务端返回信息：
+        {
+            "type": "HMIStatus",
+            "data": {
+                "modules": {
+                    "GPS": true,
+                    "CAN": false
+                },
+                "monitoredComponents": {
+                    "GPS": { "status": "ok", "message": "hello gps!" },
+                    "CAN": { "status": "ERR" }
+                }
+            }
+        }
+
+类别：HMI行为
+数据类型：JSON
+客户端请求信息：
+        {
+            "type": "HMIAction",
+            "action": "START_MODULE",
+            "value": "GPS"
+        }
+服务端需向向下位机发送指令

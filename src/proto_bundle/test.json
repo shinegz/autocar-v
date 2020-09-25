@@ -1,0 +1,61 @@
+{
+    "nested": {
+        "apollo": {
+            "nested": {
+                "dreamview": {
+                    "nested": {
+                        "Object": {
+                            "fields": {
+                                "timestampSec": {
+                                    "type": "double",
+                                    "id": 1
+                                },
+                                "heading": {
+                                    "type": "double",
+                                    "id": 2
+                                },
+                                "speed": {
+                                    "type": "double",
+                                    "id": 3
+                                },
+                                "speedAcceleration": {
+                                    "type": "double",
+                                    "id": 4
+                                },
+                                "kappa": {
+                                    "type": "double",
+                                    "id": 5
+                                },
+                                "positionX": {
+                                    "type": "double",
+                                    "id": 6
+                                },
+                                "positionY": {
+                                    "type": "double",
+                                    "id": 7
+                                }
+                            }
+                        },
+                        "SimulationWorld": {
+                            "fields": {
+                                "timestamp": {
+                                    "type": "double",
+                                    "id": 1
+                                  },
+                                "autoDrivingCar": {
+                                    "type": "Object",
+                                    "id": 2
+                                },
+                                "planningTrajectory": {
+                                    "rule": "repeated",
+                                    "type": "Object",
+                                    "id": 3
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

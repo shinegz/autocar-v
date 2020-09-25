@@ -1,4 +1,55 @@
 webWorker:
     现象描述：webWorker无法正常工作，Uncaught SyntaxError: Unexpected token '<'
-    原因：worker子线程脚本没有正确加载
-    解决方法：见util文件夹下的webworker
+    原因：worker子线程脚本没有正确加载（worker子线程脚本在react中应该如何加载）
+    解决方法：webpack模块加载配置
+    {
+        test: /\.worker\.(c|m)?js$/i, 
+        use: [{
+            loader: 'worker-loader',
+        },{
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        }
+        // 模块中使用了es6特性，需要使用babel-loader
+      ]
+    }
+  
+yaml文件的使用与webpack配置 
+    问题：在react组件内导入yaml配置文件
+    原因：错误使用customize-cra模块导出的addWebpackModuleRule(ruleobj: [Object object])函数
+    解决方法：webpack模块加载配置
+    {                                                             
+        test: /\.yml$/,
+        use: [
+          { loader: "json-loader" },
+          { loader: "yaml-loader" }
+        ],
+    }
+
+SimWorldUpdate:
+    问题：不知道protobufjs/light的用处；不清楚SimWorldMessage的数据结构
+    结果：SimWorldMessage的数据结构为proto_bundle/sim_world_proto_bundle.json文件中
+         apollo.dreamview.SimulationWorld中的fields字段值
+        protobuffjs是一个在js中处理与protocol buffer相关问题的工具，
+        其中，protobufjs/light是针对JSON Descriptor（即非.proto文件描述的数据结构）的工具
+
+
+webpack 的工作原理
+    问题：在react的模块文件中，node的内置模块无法使用？
+    解答：首先，webpack是node中的一个第三方模块（它自身遵循commonjs模块规范，
+          这也是为什么webpack.config.js中可以使用require以及node的核心模块）；
+          它本质上是一个JavaScript应用程序的静态模块打包器，在webpack看来，
+          任何一个单个资源（js文件、css文件、png等）都可以看做是一个模块；webpack从入口文件开始，
+          分析各个模块（非commonjs、AMD、ES6 Module中的模块概念）之间的依赖关系，
+          生成一个依赖关系图，这个依赖关系图中包含了应用程序所需要的每个模块对应的内容，
+          最后生成一个或多个bundle文件；对于非js文件，使用相应的loader进行处理，转换为应用程序的依赖图可以直接引用的模块；
+          在依赖关系图中的模块内容是经过webpack编译后的内容，最后执行bundle时按照依赖关系图中的顺序依次执行各个经过编译的模块内容
+    答案：webpack在分析模块内容时，无法翻译node的内置模块  
+
+Mobx中响应系统对observable data的限制
+    MobX 不会对当追踪开始时（追踪函数执行时）还不存在的 plain object observable 属性作出响应
+    但Observable maps 支持观察还不存在的条目
+
+Chart图表的更新问题

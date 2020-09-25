@@ -1,12 +1,14 @@
 import { observable, action, computed, extendObservable } from "mobx";
 
-import WS from "./websocket";
+import WS from "store/websocket";
 
 export default class HMI {
+    modes = [];
     @observable currentMode = 'none';
 
     @observable moduleStatus = observable.map();
     @observable componentStatus = observable.map();
+    @observable enableStartAuto = false;
 
     @computed get inNavigationMode() {
         return this.currentMode === "Navigation";
@@ -26,9 +28,9 @@ export default class HMI {
         //     this.utmZoneId = newStatus.utmZoneId;
         // }
 
-        // if (newStatus.modes) {
-        //     this.modes = newStatus.modes.sort();
-        // }
+        if (newStatus.modes) {
+            this.modes = newStatus.modes.sort();
+        }
         // if (newStatus.currentMode) {
         //     this.isCalibrationMode = (newStatus.currentMode.toLowerCase().includes('calibration'));
         //     if (this.currentMode !== newStatus.currentMode) {
@@ -56,8 +58,8 @@ export default class HMI {
         
         if (newStatus.modules) {
             const newKeyList = JSON.stringify(Object.keys(newStatus.modules).sort());
-            console.log(Object.prototype.toString.call(this.moduleStatus.keys()))
-            console.log([...this.moduleStatus.keys()])
+            // console.log(Object.prototype.toString.call(this.moduleStatus.keys()))
+            // console.log([...this.moduleStatus.keys()])
             const curKeyList = JSON.stringify([...this.moduleStatus.keys()].sort());
             if (newKeyList !== curKeyList) {
                 this.moduleStatus.clear();
@@ -81,6 +83,10 @@ export default class HMI {
         // if (typeof newStatus.passengerMsg === "string") {
         //     UTTERANCE.speakRepeatedly(newStatus.passengerMsg);
         // }
+    }
+
+    @action update(world) {
+        this.enableStartAuto = world.engageAdvice === "READY_TO_ENGAGE";
     }
 
 }

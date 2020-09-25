@@ -15,19 +15,23 @@ export default class Others extends React.Component {
         return (
             <div className="others card">
                 <div className="card-header"><span>Others</span></div>
+                {/* <div className="card-header"><span>其他</span></div> */}
                 <div className="card-content-column">
                     <button className="command-button"
                             disabled={disablePanel}
                             onClick={() => {
                                 WS.resetBackend();
                             }}>Reset Backend Data</button>
+                            {/* Reset Backend Data */}
                     <button className="command-button"
                             disabled={disablePanel}
                             onClick={() => {
                                 WS.dumpMessages();
                             }}>Dump Message</button>
+                            {/* Dump Message */}
                     <CheckboxItem id={"panelLock"}
                                   title={"Lock Task Panel"}
+                                //   Lock Task Panel
                                   isChecked={options.lockTaskPanel}
                                   disabled={false}
                                   extraClasses="others-checkbox"
@@ -37,8 +41,10 @@ export default class Others extends React.Component {
                     {hasPncMonitor &&
                         <CheckboxItem id={"showPNCMonitor"}
                                   title={"PNC Monitor"}
+                                //   PNC Monitor
                                   isChecked={options.showPNCMonitor}
-                                  disabled={disablePanel}
+                                  // disabled={disablePanel}
+                                  disabled={false}
                                   extraClasses="others-checkbox"
                                   onClick={() => {
                                       this.props.store.handleOptionToggle('showPNCMonitor');
@@ -57,6 +63,7 @@ export default class Others extends React.Component {
                     }
                     <CheckboxItem id={"toggleSimControl"}
                                   title={"Sim Control"}
+                                //   Sim Control
                                   isChecked={options.enableSimControl}
                                   disabled={options.lockTaskPanel}
                                   extraClasses="others-checkbox"
@@ -66,8 +73,10 @@ export default class Others extends React.Component {
                                   }} />
                     <CheckboxItem id={"showVideo"}
                                   title={"Camera Sensor"}
+                                //   Camera Sensor
                                   isChecked={options.showVideo}
-                                  disabled={disablePanel}
+                                  // disabled={disablePanel}  
+                                  disabled={false}
                                   extraClasses="others-checkbox"
                                   onClick={() => {
                                       this.props.store.handleOptionToggle('showVideo');

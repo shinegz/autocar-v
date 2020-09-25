@@ -1,8 +1,8 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 
-import CheckboxItem from "../../components/common/CheckboxItem";
-import StatusDisplay from "./StatusDisplay";
+import CheckboxItem from "components/common/CheckboxItem";
+import StatusDisplay from "components/ModuleController/StatusDisplay";
 
 @inject("store") @observer
 export default class ModuleController extends React.Component {

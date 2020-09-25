@@ -9,8 +9,17 @@
 //     require("proto_bundle/point_cloud_proto_bundle.json")
 // );
 // const pointCloudMessage = pointCloudRoot.lookupType("apollo.dreamview.PointCloud");
+const protobuf = require('protobufjs/light');
+const simWorldRoot = protobuf.Root.fromJSON(
+    require('../proto_bundle/test.json')
+);
+
+// const SimWorldMessage = simWorldRoot.lookupType("apollo.dreamview.SimulationWorld");
 
 const workercode = () => {
+
+    const SimWorldMessage = simWorldRoot.lookupType("apollo.dreamview.SimulationWorld");
+
 
     self.addEventListener("message", event => {
         // 接收主线程发送的消息
@@ -21,10 +30,12 @@ const workercode = () => {
                 if (typeof data === "string") {
                     message = JSON.parse(data);
                 } else {
+                    console.log(SimWorldMessage)
                     message = SimWorldMessage.toObject(
                         SimWorldMessage.decode(new Uint8Array(data)),
                         { enums: String });
                     message.type = "SimWorldUpdate";
+                    console.log(message)
                 }
                 break;
             // case "map":
@@ -54,7 +65,7 @@ const workercode = () => {
         }
     
     
-        console.log('webworker')
+        // console.log('webworker')
     
         if (message) {
             // 向主线程发送消息

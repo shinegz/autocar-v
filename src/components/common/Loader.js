@@ -3,8 +3,8 @@ import React from "react";
 import classNames from "classnames";
 
 // import RENDERER from "renderer";
-// import loaderImg from "../../assets/images/logo_apollo.png";
-import loaderGif from "../../assets/images/sleipnir_logo.gif";
+// import loaderImg from "assets/images/logo_apollo.png";
+import loaderGif from "assets/images/sleipnir_logo.gif";
 
 export default class Loader extends React.PureComponent {
     render() {

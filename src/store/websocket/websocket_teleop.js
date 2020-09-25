@@ -1,5 +1,5 @@
 import STORE from "store";
-import Worker from 'utils/webworker.js';
+import Worker from 'utils/my.worker.js';
 
 export default class TeleopWebSocketEndpoint {
     constructor(serverAddr) {

@@ -1,6 +1,6 @@
-import STORE from "../index";
+import STORE from "store";
 // import UTTERANCE from "../utterance";
-import worker_script from '../../util/webworker';
+import Worker from 'utils/my.worker.js';
 
 export default class RealtimeWebSocketEndpoint {
     constructor(serverAddr) {
@@ -14,7 +14,7 @@ export default class RealtimeWebSocketEndpoint {
         this.routingTime = undefined;
         this.currentMode = null;
         // 创建子线程对象
-        this.worker = new Worker(worker_script);
+        this.worker = new Worker();
 
         this.requestHmiStatus = this.requestHmiStatus.bind(this);
     }
@@ -31,7 +31,7 @@ export default class RealtimeWebSocketEndpoint {
             return;
         }
         this.websocket.onmessage = event => {
-            console.log('websocket onmessage')
+            // console.log('websocket onmessage')
             // 主线程向子线程发送消息
             this.worker.postMessage({
                 source: 'realtime',
@@ -41,15 +41,59 @@ export default class RealtimeWebSocketEndpoint {
         // 主线程接收子线程消息
         this.worker.onmessage = event => {
             console.log('主线程')
-            console.log(event)
             const message = event.data;
             console.log(message)
             switch (message.type) {
                 case "HMIStatus":
-                    console.log(STORE.hmi.moduleStatus)
                     STORE.hmi.updateStatus(message.data);
                     // RENDERER.updateGroundImage(STORE.hmi.currentMap);
                     break;
+                case "SimWorldUpdate":
+                    console.log('SimWorldUpdate')
+                //     this.checkMessage(message);
+
+                    // const isNewMode = (this.currentMode &&
+                    //                     this.currentMode !== STORE.hmi.currentMode);
+                //     const isNavigationModeInvolved = (this.currentMode === 'Navigation' ||
+                //                                     STORE.hmi.currentMode === 'Navigation');
+                    // this.currentMode = STORE.hmi.currentMode;
+                //     if (STORE.hmi.shouldDisplayNavigationMap) {
+                //         if (MAP_NAVIGATOR.isInitialized()) {
+                //             MAP_NAVIGATOR.update(message);
+                //         }
+
+                //         if (STORE.hmi.inNavigationMode) {
+                //             // In navigation mode, the coordinate system is FLU and
+                //             // relative position of the ego-car is (0, 0). But,
+                //             // absolute position of the ego-car is needed in MAP_NAVIGATOR.
+                //             message.autoDrivingCar.positionX = 0;
+                //             message.autoDrivingCar.positionY = 0;
+                //             message.autoDrivingCar.heading = 0;
+
+                //             RENDERER.coordinates.setSystem("FLU");
+                //             this.mapUpdatePeriodMs = 100;
+                //         }
+                //     } else {
+                //         RENDERER.coordinates.setSystem("ENU");
+                //         this.mapUpdatePeriodMs = 1000;
+                //     }
+
+                    // STORE.update(message, isNewMode);
+                    STORE.update(message);
+                //     RENDERER.maybeInitializeOffest(
+                //         message.autoDrivingCar.positionX,
+                //         message.autoDrivingCar.positionY,
+                //         // Updating offset only if navigation mode is involved since
+                //         // its coordination system is different from rest of the modes.
+                //         isNewMode && isNavigationModeInvolved);
+                //     RENDERER.updateWorld(message);
+                //     this.updateMapIndex(message);
+                //     if (this.routingTime !== message.routingTime) {
+                //         // A new routing needs to be fetched from backend.
+                //         this.requestRoutePath();
+                //         this.routingTime = message.routingTime;
+                //     }
+                // break;
             }
         };
         this.worker.onerror = function (e) {
@@ -60,12 +104,25 @@ export default class RealtimeWebSocketEndpoint {
         this.websocket.onclose = event => {
             console.log("WebSocket connection closed, close_code: " + event.code);
 
+            // If connection has been lost for more than 10 sec, send the error message every 2 sec
+            // const now = new Date().getTime();
+            // const lossDuration = now - this.simWorldLastUpdateTimestamp;
+            // const alertDuration = now - STORE.monitor.lastUpdateTimestamp;
+            // if (this.simWorldLastUpdateTimestamp !== 0 &&
+            //     lossDuration > 10000 && alertDuration > 2000) {
+            //     const message = "Connection to the server has been lost.";
+            //     STORE.monitor.insert("FATAL", message, now);
+            //     if (UTTERANCE.getCurrentText() !== message || !UTTERANCE.isSpeaking() ) {
+            //         UTTERANCE.speakOnce(message);
+            //     }
+            // }
+
             this.initialize();
         };
         
-        if (this.websocket.readyState === this.websocket.OPEN) {
-            this.requestHmiStatus();
-        }
+        // if (this.websocket.readyState === this.websocket.OPEN) {
+        //     this.requestHmiStatus();
+        // }
         // Request simulation world every 100ms.
         // clearInterval(this.timer);
         // this.timer = setInterval(() => {
@@ -109,12 +166,12 @@ export default class RealtimeWebSocketEndpoint {
     //     this.simWorldLastUpdateTimestamp = now;
     // }
 
-    // requestSimulationWorld(requestPlanningData) {
-    //     this.websocket.send(JSON.stringify({
-    //         type : "RequestSimulationWorld",
-    //         planning : requestPlanningData,
-    //     }));
-    // }
+    requestSimulationWorld(requestPlanningData) {
+        this.websocket.send(JSON.stringify({
+            type : "RequestSimulationWorld",
+            planning : requestPlanningData,
+        }));
+    }
 
     // checkRoutingPoint(point) {
     //     const request = {
@@ -155,17 +212,17 @@ export default class RealtimeWebSocketEndpoint {
     //     }));
     // }
 
-    // resetBackend() {
-    //     this.websocket.send(JSON.stringify({
-    //         type: "Reset",
-    //     }));
-    // }
+    resetBackend() {
+        this.websocket.send(JSON.stringify({
+            type: "Reset",
+        }));
+    }
 
-    // dumpMessages() {
-    //     this.websocket.send(JSON.stringify({
-    //         type: "Dump",
-    //     }));
-    // }
+    dumpMessages() {
+        this.websocket.send(JSON.stringify({
+            type: "Dump",
+        }));
+    }
 
     // changeSetupMode(mode) {
     //     this.websocket.send(JSON.stringify({
@@ -192,19 +249,19 @@ export default class RealtimeWebSocketEndpoint {
     //     }));
     // }
 
-    // executeModeCommand(action) {
-    //     if (!['SETUP_MODE', 'RESET_MODE', 'ENTER_AUTO_MODE'].includes(action)) {
-    //         console.error("Unknown mode command found:", action);
-    //         return;
-    //     }
+    executeModeCommand(action) {
+        if (!['SETUP_MODE', 'RESET_MODE', 'ENTER_AUTO_MODE'].includes(action)) {
+            console.error("Unknown mode command found:", action);
+            return;
+        }
 
-    //     this.websocket.send(JSON.stringify({
-    //         type: "HMIAction",
-    //         action: action,
-    //     }));
+        this.websocket.send(JSON.stringify({
+            type: "HMIAction",
+            action: action,
+        }));
 
-    //     setTimeout(this.requestHmiStatus, 5000);
-    // }
+        setTimeout(this.requestHmiStatus, 5000);
+    }
 
     executeModuleCommand(moduleName, command) {
         if (!['START_MODULE', 'STOP_MODULE'].includes(command)) {
@@ -231,12 +288,12 @@ export default class RealtimeWebSocketEndpoint {
     //     }));
     // }
 
-    // toggleSimControl(enable) {
-    //     this.websocket.send(JSON.stringify({
-    //         type: "ToggleSimControl",
-    //         enable: enable,
-    //     }));
-    // }
+    toggleSimControl(enable) {
+        this.websocket.send(JSON.stringify({
+            type: "ToggleSimControl",
+            enable: enable,
+        }));
+    }
 
     // requestRoutePath() {
     //     this.websocket.send(JSON.stringify({

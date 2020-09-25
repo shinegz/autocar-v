@@ -34,6 +34,7 @@ export default class QuickStarter extends React.Component {
         super(props);
 
         this.setup = {
+            // Setup
             "Setup": () => {
                 WS.executeModeCommand("SETUP_MODE");
                 UTTERANCE.speakOnce('Setup');
@@ -41,6 +42,7 @@ export default class QuickStarter extends React.Component {
         };
 
         this.reset = {
+            // Reset All
             "Reset All": () => {
                 WS.executeModeCommand("RESET_MODE");
                 UTTERANCE.speakOnce('Reset All');
@@ -48,6 +50,7 @@ export default class QuickStarter extends React.Component {
         };
 
         this.auto = {
+            // Start Auto
             "Start Auto": () => {
                 WS.executeModeCommand("ENTER_AUTO_MODE");
                 UTTERANCE.speakOnce('Start Auto');
@@ -55,7 +58,7 @@ export default class QuickStarter extends React.Component {
         };
     }
 
-    componentWillUpdate() {
+    UNSAFE_componentWillUpdate() {
         UTTERANCE.cancelAllInQueue();
     }
 
@@ -66,6 +69,7 @@ export default class QuickStarter extends React.Component {
         return (
             <div className="card">
                 <div className="card-header"><span>Quick Start</span></div>
+                {/* <div className="card-header"><span>快速启动</span></div> */}
                 <div className="card-content-column">
                     <CommandGroup disabled={lockTaskPanel} commands={this.setup} />
                     <CommandGroup disabled={lockTaskPanel} commands={this.reset} />

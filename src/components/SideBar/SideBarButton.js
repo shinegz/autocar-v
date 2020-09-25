@@ -13,8 +13,10 @@ export default class SideBarButton extends React.PureComponent {
             <button
                 onClick={onClick}
                 disabled={disabled}
+                // 配合react-tooltip使用
                 data-for={"sidebar-button"}
                 data-tip={tooltip}
+                // 
                 className={classNames({
                         'button': !isSubButton,
                         'button-active': !isSubButton && active,

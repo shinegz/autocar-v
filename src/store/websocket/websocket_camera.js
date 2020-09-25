@@ -1,6 +1,6 @@
 import STORE from "store";
 import RENDERER from "renderer";
-import Worker from 'utils/webworker.js';
+import Worker from 'utils/my.worker.js';
 
 export default class CameraDataWebSocketEndpoint {
     constructor(serverAddr) {

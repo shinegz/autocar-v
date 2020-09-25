@@ -1,12 +1,13 @@
-websocket通讯：
-
-类别: HMI实时数据
-数据类型：JSON
-客户端请求信息：
+websocket通讯（以下服务端返回信息可主动向客户端发送，无需收到请求信息；
+               不过，在服务端收到客户端请求信息时，必须返回对应的消息）：
+类型：
+    sim_world:
+        source: realtime
+        客户端请求信息：
         {
             "type": "HMIStatus"
         }
-服务端返回信息：
+        服务端返回信息：
         {
             "type": "HMIStatus",
             "data": {
@@ -21,12 +22,185 @@ websocket通讯：
             }
         }
 
-类别：HMI行为
-数据类型：JSON
-客户端请求信息：
+        客户端请求信息：
         {
             "type": "HMIAction",
             "action": "START_MODULE",
             "value": "GPS"
         }
-服务端需向向下位机发送指令
+        服务端向下位机发送指令，下位机执行相应操作
+
+        客户端请求信息：
+        {
+            "type" : "RequestSimulationWorld",
+            "planning" : requestPlanningData,
+        }
+        服务端返回信息：protocol buffer格式的字节流数据
+        {
+            timestamp: double,
+            sequenceNum: uint32,
+            object: Object,
+            autoDrivingCar: Object {
+                id: string,
+                polygonPoint(repeated): PolygonPoint{
+                    x: double
+                    y: double
+                    z: double(0)
+                    gaussianInfo: apollo.common.GaussianInfo
+                },
+                heading: double,
+                latitude: double,
+                longitude: double,
+                positionX: double,
+                positionY: double,
+                length: double,
+                width: double,
+                height: double,
+                speed: double,
+                speedAcceleration: double,
+                speedJerk: double,
+                spin: double,
+                spinAcceleration: double,
+                spinJerk: double,
+                speedHeading: double,
+                kappa: double,
+                dkappa: double
+                signalSet(repeated): string
+                currentSignal: string
+                timestampSec: double
+                decision(repeated): Decision{
+                    probability: double
+                    predictedTrajectory(repeated): PolygonPoint
+                }
+                yieldedObstacle: bool
+                throttlePercentage: double
+                brakePercentage: double
+                steeringPercentage: double
+                steeringAngle: double
+                steeringRatio: double
+                disengageType: enum {
+                    "DISENGAGE_NONE": 0,
+                    "DISENGAGE_UNKNOWN": 1,
+                    "DISENGAGE_MANUAL": 2,
+                    "DISENGAGE_EMERGENCY": 3,
+                    "DISENGAGE_AUTO_STEER_ONLY": 4,
+                    "DISENGAGE_AUTO_SPEED_ONLY": 5,
+                    "DISENGAGE_CHASSIS_ERROR": 6
+                }
+                type: enum {
+                    "UNKNOWN": 0,
+                    "UNKNOWN_MOVABLE": 1,
+                    "UNKNOWN_UNMOVABLE": 2,
+                    "PEDESTRIAN": 3,
+                    "BICYCLE": 4,
+                    "VEHICLE": 5,
+                    "VIRTUAL": 6,
+                    "CIPV": 7
+                },
+                subType: apollo.perception.PerceptionObstacle.SubType,
+                prediction(repeated): Prediction
+                confidence: double
+                obstaclePriority: apollo.prediction.ObstaclePriority
+            },
+            trafficSignal: Object,
+            routePath: RoutePath,
+            routingTime: double,
+            planningTrajectory(repeated): Object,
+            mainStop: Object,
+            mainDecision: Object,
+            speedLimit: double,
+            delay: {
+                chassis: double,
+                localization: double,
+                perceptionObstacle: double,
+                planning: double,
+                prediction: double,
+                trafficLight: double,
+                control: double
+            },
+            monitor: {
+                header: {
+                    timestampSec: double,
+                    moduleName: string,
+                    sequenceNum: uint32,
+                    lidarTimestamp: uint64,
+                    cameraTimestamp: uint64,
+                    radarTimestamp: uint64,
+                    version: uint32,
+                    status: {
+                        errorCode: default 'OK',
+                        msg: string
+                    },
+                    frameId: string
+                },
+                item: {
+                    source: enum {
+                        "UNKNOWN": 1,
+                        "CANBUS": 2,
+                        "CONTROL": 3,
+                        "DECISION": 4,
+                        "LOCALIZATION": 5,
+                        "PLANNING": 6,
+                        "PREDICTION": 7,
+                        "SIMULATOR": 8,
+                        "HWSYS": 9,
+                        "ROUTING": 10,
+                        "MONITOR": 11,
+                        "HMI": 12,
+                        "RELATIVE_MAP": 13,
+                        "GNSS": 14,
+                        "CONTI_RADAR": 15,
+                        "RACOBIT_RADAR": 16,
+                        "ULTRASONIC_RADAR": 17,
+                        "MOBILEYE": 18,
+                        "DELPHI_ESR": 19,
+                        "STORYTELLING": 20
+                    },
+                    msg: string,
+                    logLevel: enum {
+                        "INFO": 0,
+                        "WARN": 1,
+                        "ERROR": 2,
+                        "FATAL": 3
+                    }
+                }
+            },
+            notification(repeated): Notification,
+            engageAdvice: string,  // 对于能否开启自动驾驶的建议
+            latency: {key[string]: value[Latency]},
+            mapElementIds: MapElementIds,
+            mapHash: uint64,
+            mapRadius: double,
+            planningData: apollo.planning_internal.PlanningData,
+            gps: Object,
+            laneMarker: apollo.perception.LaneMarkers,
+            controlData: ControlData{
+                timestampSec: double
+                stationError: double
+                lateralError: double
+                headingError: double
+                currentTargetPoint: apollo.common.TrajectoryPoint
+            },
+            navigationPath(repeated): apollo.common.Path,
+            isRssSafe: bool(true),
+            shadowLocalization: Object,
+            perceivedSignal(repeated): Object,
+            stories: {key[string]: value[bool]},
+        }
+
+        客户端请求信息：{
+            "type": "ToggleSimControl",
+            "enable": enable,
+        }
+        服务端行为：
+            不知道
+        
+
+    camera:
+        source: 'camera'
+
+    map:
+        source: 'map'
+
+    point_cloud:
+        source: 'point_cloud'

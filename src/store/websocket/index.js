@@ -1,6 +1,6 @@
 // import OfflinePlaybackWebSocketEndpoint from "./websocket_offline";
-import RealtimeWebSocketEndpoint from "./websocket_realtime";
-// import MapDataWebSocketEndpoint from "./websocket_map";
+import RealtimeWebSocketEndpoint from "store/websocket/websocket_realtime";
+import MapDataWebSocketEndpoint from "./websocket_map";
 // import PointCloudWebSocketEndpoint from "./websocket_point_cloud";
 // import CameraDataWebSocketEndpoint from "./websocket_camera";
 // import TeleopWebSocketEndpoint from "./websocket_teleop";
@@ -48,8 +48,8 @@ const simWorldServerAddr = deduceWebsocketServerAddr("sim_world");
 const WS = new RealtimeWebSocketEndpoint(simWorldServerAddr);
 export default WS;
 
-// const mapServerAddr = deduceWebsocketServerAddr("map");
-// export const MAP_WS = new MapDataWebSocketEndpoint(mapServerAddr);
+const mapServerAddr = deduceWebsocketServerAddr("map");
+export const MAP_WS = new MapDataWebSocketEndpoint(mapServerAddr);
 
 // const pointCloudServerAddr = deduceWebsocketServerAddr("point_cloud");
 // export const POINT_CLOUD_WS = new PointCloudWebSocketEndpoint(pointCloudServerAddr);

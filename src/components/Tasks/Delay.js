@@ -24,14 +24,15 @@ export default class DelayTable extends React.Component {
     render() {
         const { moduleDelay } = this.props.store;
 
-        const items = moduleDelay.keys().sort()
+        // console.log(moduleDelay.keys())
+        const items = Array.from(moduleDelay.keys()).sort()
             .map(key => {
                 const module = moduleDelay.get(key);
                 const warning = module.delay > 2000 && module.name !== "TrafficLight";
 
                 return (
                     <div className="delay-item" key={'delay_' + key}>
-                        <div className="name">{module.name}</div>
+                        <div className="name">{module.name}</div>  
                         <Delay time={module.delay} warning={warning} />
                     </div>
                 );
@@ -40,6 +41,7 @@ export default class DelayTable extends React.Component {
         return (
             <div className="delay card">
                 <div className="card-header"><span>Module Delay</span></div>
+                {/* <div className="card-header"><span>模块延时</span></div> */}
                 <div className="card-content-column">
                     {items}
                 </div>

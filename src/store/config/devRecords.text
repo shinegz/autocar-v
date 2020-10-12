@@ -53,3 +53,4 @@ Mobx中响应系统对observable data的限制
     但Observable maps 支持观察还不存在的条目
 
 Chart图表的更新问题
+    1.后端数据发送速率太快的话，前端数据接收并处理的速度会跟不上，这会造成数据的丢失

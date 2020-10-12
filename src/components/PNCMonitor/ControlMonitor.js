@@ -15,15 +15,15 @@ export default class ControlMonitor extends React.Component {
 
         return (
             <div>
-                {generateScatterGraph(SETTING.trajectoryGraph, data.trajectoryGraph, {
+                {/* {generateScatterGraph(SETTING.trajectoryGraph, data.trajectoryGraph, {
                     pose: data.pose,
-                })}
+                })} */}
                 {generateScatterGraph(SETTING.speedGraph, data.speedGraph)}
                 {generateScatterGraph(SETTING.accelerationGraph, data.accelerationGraph)}
                 {generateScatterGraph(SETTING.curvatureGraph, data.curvatureGraph)}
-                {generateScatterGraph(SETTING.stationErrorGraph, data.stationErrorGraph)}
+                {/* {generateScatterGraph(SETTING.stationErrorGraph, data.stationErrorGraph)}
                 {generateScatterGraph(SETTING.lateralErrorGraph, data.lateralErrorGraph)}
-                {generateScatterGraph(SETTING.headingErrorGraph, data.headingErrorGraph)}
+                {generateScatterGraph(SETTING.headingErrorGraph, data.headingErrorGraph)} */}
             </div> 
         );
     }

@@ -1,3 +1,6 @@
+/**
+ * 负责管理人机交互接口的相关数据
+ */
 import { observable, action, computed, extendObservable } from "mobx";
 
 import WS from "store/websocket";

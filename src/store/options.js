@@ -1,3 +1,6 @@
+/**
+ * 负责管理选项数据
+ */
 import { observable, action, computed, extendObservable, isComputedProp } from "mobx";
 import PARAMETERS from 'store/config/parameters.yml'
 import _ from 'lodash';

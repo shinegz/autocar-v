@@ -133,14 +133,20 @@ function syncXYWindowSize(scale) {
 export default class ScatterGraph extends React.Component {
     initializeCanvas(title, options) {
         this.name2idx = {};
+        // 图表配置选项对象
         const chartOptions = {
+            // 图表标题配置
             title: {
                 display: (title && title.length > 0),
                 text: title
             },
+            // 显示图表上出现的区域数据集的图例配置
             legend: {
+                // 是否显示图例
                 display: options.legend.display,
+                // 图例标签配置
                 labels: {
+                    // 过滤图例
                     filter: (legendItem, data) => {
                         const hideLabel = _.get(data,
                             `datasets[${legendItem.datasetIndex}].hideLabelInLegend`, false);
@@ -149,15 +155,18 @@ export default class ScatterGraph extends React.Component {
                     }
                 }
             },
+            // 提示配置
             tooltips: {
                 enable: true,
                 mode: "nearest",
                 intersect: false,
             },
+            // 图表横纵比
             aspectRatio: options.aspectRatio,
         };
 
         if (options.axes) {
+            // 判断图表配置选项对象中是否有坐标轴配置对象
             if (!chartOptions.scales) {
                 chartOptions.scales = {};
             }
@@ -165,11 +174,14 @@ export default class ScatterGraph extends React.Component {
                 const name = axis + 'Axes';
                 const setting = options.axes[axis];
                 const axisOptions = {
+                    // 连接数据集与刻度轴的ID
                     id: `${axis}-axis-0`,
+                    // 坐标轴刻度文字
                     scaleLabel: {
                         display: !_.isEmpty(setting.labelString),
                         labelString: setting.labelString,
                     },
+                    // 坐标轴刻度配置
                     ticks: {
                         min: setting.min,
                         max: setting.max,
@@ -207,6 +219,7 @@ export default class ScatterGraph extends React.Component {
                             return tickString;
                         },
                     },
+                    // 网格线配置
                     gridLines: {
                         color: 'rgba(153, 153, 153, 0.5)',
                         zeroLineColor: 'rgba(153, 153, 153, 0.7)',
@@ -230,6 +243,7 @@ export default class ScatterGraph extends React.Component {
         this.chart = new Chart(ctx, { type: "scatter", options: chartOptions });
     }
 
+    // 数据集配置
     constructDataConfig(properties) {
         // basic properties
         const config = {
@@ -303,6 +317,8 @@ export default class ScatterGraph extends React.Component {
     }
 
     updateChart(props) {
+        console.log("更新图表",props)
+        // props.data 为图表数据；props.properties为数据对应的配置属性
         if (!props.data || !props.properties) {
             return;
         }
@@ -323,7 +339,9 @@ export default class ScatterGraph extends React.Component {
             }
             const idx = this.name2idx[name];
             const nameInString = JSON.stringify(name);
+            // 获取图表数据配置属性
             const properties = _.get(props, `properties.lines[${nameInString}]`, {});
+            // 获取图表数据下的分组
             const points = _.get(datasets, `lines[${nameInString}]`, []);
             this.updateData(idx, name, properties, points);
         };
@@ -349,14 +367,14 @@ export default class ScatterGraph extends React.Component {
         // Remove un-used polygons data
         this.chart.data.datasets.splice(idx, this.chart.data.datasets.length - idx);
 
-        // Update chart
+        // 更新图表并阻止动画效果
         this.chart.update(0);
     }
 
     componentDidMount() {
+        console.log("图表组件挂载完成")
         const { title, options } = this.props;
         this.initializeCanvas(title, options);
-        
         this.updateChart(this.props);
     }
 

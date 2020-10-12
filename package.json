@@ -9,6 +9,7 @@
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "compute-polynomial": "^1.1.0",
+    "flv.js": "^1.5.0",
     "mobx": "^5.15.6",
     "mobx-react": "^6.3.0",
     "protobufjs": "^6.10.1",

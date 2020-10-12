@@ -104,7 +104,7 @@ class DreamviewStore {
         // this.monitor.update(world);
         // this.trafficSignal.update(world);
         // this.hmi.update(world);
-        console.log("update")
+        // console.log("update")
         
         // this.updateCustomizedToggles(world);
         if (this.options.showPNCMonitor) {

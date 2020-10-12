@@ -1,11 +1,26 @@
 import React from "react";
-import camera from 'assets/1.png'
+import Flvjs from 'flv.js';
 
 export class CameraVideo extends React.Component {
+    componentDidMount() {
+        if (Flvjs.isSupported()) {
+            var videoElement = document.getElementById('videoElement');
+            var flvPlayer = Flvjs.createPlayer({
+                type: 'flv',
+                isLive: true,
+                // url: 'http://192.168.83.129:8080/live/livestream.flv'
+                url: 'ws://10.23.21.102:8081/live/livestream.flv'
+            });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load();
+            flvPlayer.play();
+        }
+    }
+
     render() {
         return (
             <div className="camera-video">
-                <img src={camera}/>
+                <video id="videoElement"></video>
             </div>
         );
     }
@@ -16,7 +31,6 @@ export default class SensorCamera extends React.Component {
         return (
             <div className="card camera">
                 <div className="card-header"><span>Camera View</span></div>
-                {/* <div className="card-header"><span>摄像头画面</span></div> */}
                 <div className="card-content-column">
                     <CameraVideo />
                 </div>

@@ -1,3 +1,6 @@
+/**
+ * 负责管理软件界面各部分的尺寸数据
+ */
 import { observable, computed, action } from "mobx";
 
 import PLAYBACK_STYLE from "styles/playback-controls.scss";

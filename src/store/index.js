@@ -4,6 +4,9 @@ import Options from 'store/options';
 import HMI from 'store/hmi';
 import Dimension from 'store/dimension';
 import ControlData from "store/control_data";
+import Meters from "store/meters";
+import Monitor from "store/monitor";
+import TrafficSignal from "store/traffic_signal";
 
 class DreamviewStore {
 
@@ -14,6 +17,12 @@ class DreamviewStore {
     @observable hmi = new HMI();
 
     @observable controlData = new ControlData();
+
+    @observable trafficSignal = new TrafficSignal();
+
+    @observable meters = new Meters();
+
+    @observable monitor = new Monitor();
 
     @observable geolocation = {};
 

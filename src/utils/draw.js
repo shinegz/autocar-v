@@ -8,6 +8,7 @@ const Line = ThreeLine2D(THREE);
 const BasicShader = ThreeLine2DBasicShader(THREE);
 const textureLoader = new THREE.TextureLoader();
 
+// 在Z轴方向上抬高一点mesh，可以避免mesh与ground重合，导致观察不清
 export function addOffsetZ(mesh, value) {
     if (value) {
         const zOffset = value * DELTA_Z_OFFSET;
@@ -85,7 +86,7 @@ export function drawSegmentsFromPoints(
     points, color = 0xff0000, linewidth = 1, zOffset = 0,
     matrixAutoUpdate = true, transparent = false, opacity = 1) {
     const path = new THREE.Path();
-    const geometry = path.createGeometry(points);
+    const geometry = path.setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
         color: color,
         linewidth: linewidth,

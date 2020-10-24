@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 // import Loadable from 'react-loadable';
 
 // import RouteEditingBar from "components/RouteEditingBar";
-import StatusBar from "components/StatusBar";
+// import StatusBar from "components/StatusBar";
 import Scene from "components/Scene";
 import Loader from "components/common/Loader";
 // import PlaybackControls from "components/PlaybackControls";

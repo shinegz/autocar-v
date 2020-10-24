@@ -34,10 +34,11 @@ export default class Scene extends React.Component {
                 <div id="canvas"
                      className="dreamview-canvas"
                      style={{left: leftPosition}}
-                     onMouseMove={(event) => {
-                        const geo = RENDERER.getGeolocation(event);
-                        STORE.setGeolocation(geo);
-                     }}>
+                    //  onMouseMove={(event) => {
+                    //     const geo = RENDERER.getGeolocation(event);
+                    //     STORE.setGeolocation(geo);
+                    //  }}
+                    >
                     {options.showGeo && <Geolocation />}
                 </div>
             </React.Fragment>

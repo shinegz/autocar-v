@@ -24,7 +24,7 @@ camera:
   laneWidthToViewDistanceRatio: 5
 ground:
   defaults:
-    mpp: 0.125
+    mpp: 200
     xres: 8192
     yres: 8192
     xorigin: 4096

@@ -1,6 +1,7 @@
 import STORE from "store";
 // import UTTERANCE from "../utterance";
 import Worker from 'utils/my.worker.js';
+import RENDERER from "renderer";
 
 export default class RealtimeWebSocketEndpoint {
     constructor(serverAddr) {
@@ -40,23 +41,23 @@ export default class RealtimeWebSocketEndpoint {
         };
         // 主线程接收子线程消息
         this.worker.onmessage = event => {
-            console.log('主线程')
+            // console.log('主线程')
             const message = event.data;
-            console.log(message)
+            // console.log(message)
             switch (message.type) {
                 case "HMIStatus":
                     STORE.hmi.updateStatus(message.data);
                     // RENDERER.updateGroundImage(STORE.hmi.currentMap);
                     break;
                 case "SimWorldUpdate":
-                    console.log('SimWorldUpdate')
+                    // console.log('SimWorldUpdate')
                 //     this.checkMessage(message);
 
-                    // const isNewMode = (this.currentMode &&
-                    //                     this.currentMode !== STORE.hmi.currentMode);
-                //     const isNavigationModeInvolved = (this.currentMode === 'Navigation' ||
-                //                                     STORE.hmi.currentMode === 'Navigation');
-                    // this.currentMode = STORE.hmi.currentMode;
+                //     const isNewMode = (this.currentMode &&
+                //                         this.currentMode !== STORE.hmi.currentMode);
+                // //     const isNavigationModeInvolved = (this.currentMode === 'Navigation' ||
+                // //                                     STORE.hmi.currentMode === 'Navigation');
+                //     this.currentMode = STORE.hmi.currentMode;
                 //     if (STORE.hmi.shouldDisplayNavigationMap) {
                 //         if (MAP_NAVIGATOR.isInitialized()) {
                 //             MAP_NAVIGATOR.update(message);
@@ -80,20 +81,11 @@ export default class RealtimeWebSocketEndpoint {
 
                     // STORE.update(message, isNewMode);
                     STORE.update(message);
-                //     RENDERER.maybeInitializeOffest(
-                //         message.autoDrivingCar.positionX,
-                //         message.autoDrivingCar.positionY,
-                //         // Updating offset only if navigation mode is involved since
-                //         // its coordination system is different from rest of the modes.
-                //         isNewMode && isNavigationModeInvolved);
-                //     RENDERER.updateWorld(message);
-                //     this.updateMapIndex(message);
-                //     if (this.routingTime !== message.routingTime) {
-                //         // A new routing needs to be fetched from backend.
-                //         this.requestRoutePath();
-                //         this.routingTime = message.routingTime;
-                //     }
-                // break;
+                    // 判断是否初始化无人车偏移
+                    RENDERER.maybeInitializeOffest(
+                        message.autoDrivingCar.positionX,
+                        message.autoDrivingCar.positionY);
+                    RENDERER.updateWorld(message);
             }
         };
         this.worker.onerror = function (e) {

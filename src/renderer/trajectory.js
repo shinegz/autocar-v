@@ -1,6 +1,8 @@
-import _ from 'lodash';
+import * as THREE from "three";
+
 import STORE from "store";
-import { drawThickBandFromPoints, drawDashedLineFromPoints } from "utils/draw";
+import PARAMETERS from "store/config/parameters.yml";
+import { drawThickBandFromPoints } from "utils/draw";
 
 function normalizePlanningTrajectory(trajectory, coordinates) {
     if (!trajectory) {
@@ -11,7 +13,8 @@ function normalizePlanningTrajectory(trajectory, coordinates) {
 
     for (let i = 0; i < trajectory.length; ++i) {
         const point = trajectory[i];
-        const normalizedPoint = coordinates.applyOffset(point);
+        const normalizedPoint = coordinates.applyOffset(
+            new THREE.Vector2(point.positionX, point.positionY));
 
         if (normalizedPoint === null) {
             // Just skip the trajectory point if it cannot be
@@ -20,11 +23,14 @@ function normalizePlanningTrajectory(trajectory, coordinates) {
         }
 
         if (result.length > 0) {
-            // Skip the point if the interval (against the previous point)
-            // is too small. The interval is measured as L1 distance.
+            // 如果最近两点的间距太小则直接跳过
             const distance =
-                Math.abs(result[result.length - 1].x - normalizedPoint.x) +
-                Math.abs(result[result.length - 1].y - normalizedPoint.y);
+                Math.sqrt(
+                    Math.abs(result[result.length - 1].x - normalizedPoint.x) *
+                    Math.abs(result[result.length - 1].x - normalizedPoint.x) +
+                    Math.abs(result[result.length - 1].y - normalizedPoint.y) *
+                    Math.abs(result[result.length - 1].y - normalizedPoint.y)
+                );    
             if (distance < PARAMETERS.planning.minInterval) {
                 continue;
             }
@@ -38,72 +44,38 @@ function normalizePlanningTrajectory(trajectory, coordinates) {
 
 export default class PlanningTrajectory {
     constructor() {
-        this.paths = {};
+        this.path = null;
     }
 
-    update(world, planningData, coordinates, scene) {
+    update(world, coordinates, scene) {
+        if (!STORE.options.showPlanningTrajectory) {
+            if (this.path) {
+                this.path.visible = false;
+            }
+            return;
+        }
+
         // Derive the width of the trajectory ribbon.
         let width = null;
         if (!world.autoDrivingCar.width) {
             console.warn("Unable to get the auto driving car's width, " +
-                "planning line width has been set to default: " +
-                `${PARAMETERS.planning.defaults.width} m.`);
+                         "planning line width has been set to default: " +
+                         `${PARAMETERS.planning.defaults.width} m.`);
             width = PARAMETERS.planning.defaults.width;
         } else {
-            width = world.autoDrivingCar.width;
+            width = world.autoDrivingCar.width * 0.8;
         }
 
-        // Prepare data
-        const newPaths = {};
-        if (world.planningTrajectory) {
-            newPaths['trajectory'] =
-                world.planningTrajectory.map((point) => {
-                    return { x: point.positionX, y: point.positionY };
-                });
-        }
-        if (planningData && planningData.path) {
-            planningData.path.forEach((path) => {
-                newPaths[path.name] = path.pathPoint;
-            });
+        const newPath = normalizePlanningTrajectory(
+            world.planningTrajectory, coordinates);
+
+        if (this.path) {
+            scene.remove(this.path);
+            this.path.geometry.dispose();
+            this.path.material.dispose();
         }
 
-        // Draw paths
-        const allPaths = _.union(Object.keys(this.paths), Object.keys(newPaths));
-        allPaths.forEach((name) => {
-            const optionName = name === 'trajectory' ? 'showPlanningTrajectory' : name;
-            if (!STORE.options[optionName] && !STORE.options.customizedToggles.get(optionName)) {
-                if (this.paths[name]) {
-                    this.paths[name].visible = false;
-                }
-            } else {
-                const oldPath = this.paths[name];
-                if (oldPath) {
-                    scene.remove(oldPath);
-                    oldPath.geometry.dispose();
-                    oldPath.material.dispose();
-                }
-
-                let property = PARAMETERS.planning.pathProperties[name];
-                if (!property) {
-                    console.warn(
-                        `No path properties found for [${name}]. Use default properties instead.`);
-                    property = PARAMETERS.planning.pathProperties.default;
-                    PARAMETERS.planning.pathProperties[name] = property;
-                }
-
-                if (newPaths[name]) {
-                    const points = normalizePlanningTrajectory(newPaths[name], coordinates);
-                    if (property.style === 'dash') {
-                        this.paths[name] = drawDashedLineFromPoints(points, property.color,
-                            width * property.width, 1 /* dash size */, 1 /* gapSize */,
-                            property.zOffset, property.opacity);
-                    } else {
-                        this.paths[name] = drawThickBandFromPoints(points, width * property.width,
-                            property.color, property.opacity, property.zOffset);
-                    }
-                    scene.add(this.paths[name]);
-                }
-            }
-        });
+        this.path = drawThickBandFromPoints(newPath, width, 0x01D1C1, 0.65, 4);
+        scene.add(this.path);
     }
 }

@@ -2,7 +2,6 @@ import * as THREE from "three";
 
 export default class Coordinates {
     constructor() {
-        this.systemName = "ENU";
         this.offset = null;
     }
 
@@ -15,11 +14,7 @@ export default class Coordinates {
             x: x,
             y: y
         };
-        console.log("Offset is set to x:" + x + ", y:" + y);
-    }
-
-    setSystem(newSystem) {
-        this.systemName = newSystem;
+        console.log("Offset is set to x:" + x + ', y:' + y);
     }
 
     applyOffset(point, reverse = false) {
@@ -30,7 +25,7 @@ export default class Coordinates {
             console.error("Offset contains NaN!");
             return null;
         } else if (isNaN(point.x) || isNaN(point.y)) {
-            console.warn("Point contains NaN!");
+            console.error("Point contains NaN!");
             return null;
         } else if (!isNaN(point.z)) {
             return new THREE.Vector3(

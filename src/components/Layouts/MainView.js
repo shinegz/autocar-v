@@ -59,9 +59,9 @@ export default class MainView extends React.Component {
         return (
             // id="map"是后来加的，为了显示百度地图
             <div className="main-view" id="map" style={{ height }}>
-                {/* {(!isInitialized && !OFFLINE_PLAYBACK) ? <Loader /> : <SceneView />} */}
+                {!isInitialized ? <Loader /> : <SceneView />}
                 {/* <Loader /> */}
-                <SceneView />
+                {/* <SceneView /> */}
             </div >
         );
     }

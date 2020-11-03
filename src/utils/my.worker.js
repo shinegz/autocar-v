@@ -14,13 +14,12 @@ self.addEventListener("message", event => {
             if (typeof data === "string") {
                 message = JSON.parse(data);
             } else {
-                // console.log('gz')
                 // console.log(SimWorldMessage)
                 message = SimWorldMessage.toObject(
                     SimWorldMessage.decode(new Uint8Array(data)),
                     { enums: String });
                 message.type = "SimWorldUpdate";
-                console.log(message)
+                // console.log(message)
             }
             break;
         case "map":

@@ -43,7 +43,8 @@ planning:
   # The minimum interval between two consecutive
   minInterval: 0.1
   defaults:
-    width: 1.4
+    width: 2.8
+    # width: 1.4
   pathProperties:
     default:
       width: 0.1

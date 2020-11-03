@@ -48,6 +48,7 @@ export default class Meters {
             if (world.autoDrivingCar.throttlePercentage !== undefined) {
                 this.throttlePercent = roundToTens(world.autoDrivingCar.throttlePercentage);
             }
+            
             if (world.autoDrivingCar.brakePercentage !== undefined) {
                 this.brakePercent = roundToTens(world.autoDrivingCar.brakePercentage);
             }

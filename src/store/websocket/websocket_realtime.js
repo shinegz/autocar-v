@@ -86,6 +86,12 @@ export default class RealtimeWebSocketEndpoint {
                         message.autoDrivingCar.positionX,
                         message.autoDrivingCar.positionY);
                     RENDERER.updateWorld(message);
+                    break;
+                case "MapData":
+                    console.log("mapData");
+                    RENDERER.updateMap(message.data);
+                    STORE.setInitializationStatus(true);
+                    break;
             }
         };
         this.worker.onerror = function (e) {

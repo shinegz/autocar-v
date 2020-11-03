@@ -6,12 +6,15 @@ import Coordinates from "renderer/coordinates";
 import AutoDrivingCar from "renderer/adc";
 import Ground from "renderer/ground";
 import PlanningTrajectory from "renderer/trajectory.js";
+import Routing from "renderer/routing.js";
+import Map from "renderer/map_myself.js";
 
 class Renderer {
     constructor() {
         this.coordinates = new Coordinates();
         this.renderer = new THREE.WebGLRenderer({
-            preserveDrawingBuffer: true
+            preserveDrawingBuffer: true,
+            antialias: true
         });
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x031C31);
@@ -27,6 +30,10 @@ class Renderer {
 
         // The planning tranjectory.
         this.planningTrajectory = new PlanningTrajectory();
+
+        this.routing = new Routing();
+
+        this.map = new Map();
 
     }
 
@@ -44,17 +51,6 @@ class Renderer {
             PARAMETERS.camera[this.options.cameraAngle].near,
             PARAMETERS.camera[this.options.cameraAngle].far
         );
-        // this.camera.position.set(0,-16,3);
-        // // this.camera.lookAt(this.scene.position);
-        // this.camera.lookAt(0,0,0);
-        // 实验
-        // this.camera.position.set(0,-6,3);
-        // this.camera.up.set(0, 0, 1); // 设置相机的顶部为Z轴正方向
-        // this.camera.lookAt(0,0,0)
-        // 验证
-        // this.camera.position.set(-8.46972543541674,-13.190815818824133, 16.140512045239262);
-        // this.camera.up.set(0, 0, 1); // 设置相机的顶部为Z轴正方向
-        // this.camera.lookAt(8.46972543541674,13.190815818824133,0)
         this.scene.add(this.camera);
 
         //坐标轴辅助
@@ -74,10 +70,10 @@ class Renderer {
         //
         // TODO maybe implement this?
         // 添加控件
-        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         // this.controls.enabled = false;
         // OrbitControl实验
-        // this.camera.position.set(0, 0, 6);
+        // this.camera.position.set(0, 0, 100);
         // this.controls.update();
 
         this.scene.add(ambient);
@@ -104,7 +100,6 @@ class Renderer {
     }
 
     adjustCameraWithTarget(target) {
-        // console.log(target);
         // TODO Add more views.
         const deltaX = (this.viewDistance * Math.cos(target.rotation.y)
             * Math.cos(this.viewAngle));
@@ -125,10 +120,6 @@ class Renderer {
         //  // 实验OrbitControls
         //  this.enableOrbitControls();
         //  console.log(this.controls)
-        // this.camera.position.set(-8.46972543541674, -13.190815818824133, 16.140512045239262);
-        // this.camera.up.set(0, 0, 1); // 设置相机的顶部为Z轴正方向
-        // this.camera.lookAt(8.46972543541674, 13.190815818824133,0)
-        // console.log(this.camera);
         this.camera.updateProjectionMatrix();
     }
 
@@ -161,22 +152,14 @@ class Renderer {
             return;
         }
 
-        // Upon the first time in render() it sees car mesh loaded,
-        // added it to the scene.
         if (!this.adcMeshAddedToScene) {
             this.adcMeshAddedToScene = true;
             this.scene.add(this.adc.mesh);
-            // console.log(this.adc.mesh);
-            // console.log("添加车模型！")
         }
 
-        // Upon the first time in render() it sees ground mesh loaded,
-        // added it to the scene.
         if (!this.ground.initialized) {
             this.ground.initialize(this.coordinates);
             this.scene.add(this.ground.mesh);
-            // console.log(this.ground.mesh);
-            // console.log("添加地面模型！")
         }
 
         // 根据目标位置实时调整相机位置，使物体始终处在视野的良好范围内
@@ -195,8 +178,14 @@ class Renderer {
     updateWorld(world) {
         // console.log(world);
         this.adc.update(world, this.coordinates);
-        // 更新规划轨迹点
+        // 更新局部规划轨迹点
         this.planningTrajectory.update(world, this.coordinates, this.scene);
+        // this.routing.update(world, this.coordinates, this.scene);
+    }
+
+    updateMap(mapData) {
+        console.log("updateMap");
+        this.map.appendMapData(mapData, this.coordinates, this.scene);
     }
 }
 

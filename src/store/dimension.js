@@ -162,7 +162,7 @@ export default class Dimension {
         const oldSize = this.navigation.size;
         this.navigation.size =
             (oldSize === MAP_SIZE.FULL) ? MAP_SIZE.DEFAULT : MAP_SIZE.FULL;
-
+        console.log("点击");
         this.updateSceneDimension();
         this.updateNavigationDimension();
     }

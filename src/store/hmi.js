@@ -13,7 +13,7 @@ export default class HMI {
     @observable componentStatus = observable.map();
     @observable enableStartAuto = false;
 
-    utmZoneId = 10;
+    utmZoneId = "49QGF";
 
     @computed get inNavigationMode() {
         return this.currentMode === "Navigation";

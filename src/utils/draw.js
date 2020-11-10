@@ -84,7 +84,8 @@ export function drawThickBandFromPoints(
 export function drawSegmentsFromPoints(
     points, color = 0xff0000, linewidth = 1, zOffset = 0,
     matrixAutoUpdate = true, transparent = false, opacity = 1) {
-    const geometry = new THREE.Geometry().setFromPoints(points);
+    const geometry = new THREE.Geometry();
+    geometry.setFromPoints(points)
     const material = new THREE.LineBasicMaterial({
         color: color,
         linewidth: linewidth,

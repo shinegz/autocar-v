@@ -99,6 +99,7 @@ class Renderer {
         this.renderer.setSize(width, height);
     }
 
+    // 相机位置动态调整算法
     adjustCameraWithTarget(target) {
         // TODO Add more views.
         const deltaX = (this.viewDistance * Math.cos(target.rotation.y)
@@ -135,7 +136,6 @@ class Renderer {
         this.camera.position.set(carPosition.x, carPosition.y, 50);
         this.camera.up.set(0, 1, 0);
         this.camera.lookAt(carPosition.x, carPosition.y, 0);
-
     }
 
     // Render one frame. This supports the main draw/render loop.

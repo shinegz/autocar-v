@@ -1,6 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-// import Loadable from 'react-loadable';
+import Loadable from 'react-loadable';
 
 // import RouteEditingBar from "components/RouteEditingBar";
 import StatusBar from "components/StatusBar";
@@ -8,12 +8,12 @@ import Scene from "components/Scene";
 import Loader from "components/common/Loader";
 // import PlaybackControls from "components/PlaybackControls";
 
-// const Navigation = Loadable({
-//     loader: () => import("components/Navigation"),
-//     loading() {
-//         return <div className="navigation-view">Loading...</div>;
-//     }
-// });
+const Navigation = Loadable({
+    loader: () => import("components/Navigation"),
+    loading() {
+        return <div className="navigation-view">Loading...</div>;
+    }
+});
 
 @inject("store") @observer
 class SceneView extends React.Component {
@@ -45,6 +45,9 @@ class SceneView extends React.Component {
                     <Navigation onResize={() => dimension.toggleNavigationSize()}
                                 hasRoutingControls={hmi.inNavigationMode}
                                 {...dimension.navigation} />} */}
+                <Navigation onResize={() => dimension.toggleNavigationSize()}
+                            hasRoutingControls={hmi.inNavigationMode}
+                            {...dimension.navigation} />
             </React.Fragment>
         );
     }

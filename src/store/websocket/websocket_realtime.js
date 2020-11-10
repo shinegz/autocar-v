@@ -1,5 +1,6 @@
 import STORE from "store";
 // import UTTERANCE from "../utterance";
+import MAP_NAVIGATOR from "components/Navigation/MapNavigator";
 import Worker from 'utils/my.worker.js';
 import RENDERER from "renderer";
 
@@ -79,6 +80,9 @@ export default class RealtimeWebSocketEndpoint {
                 //         this.mapUpdatePeriodMs = 1000;
                 //     }
 
+                    if (MAP_NAVIGATOR.isInitialized()) {
+                        MAP_NAVIGATOR.update(message);
+                    }
                     // STORE.update(message, isNewMode);
                     STORE.update(message);
                     // 判断是否初始化无人车偏移
@@ -88,7 +92,7 @@ export default class RealtimeWebSocketEndpoint {
                     RENDERER.updateWorld(message);
                     break;
                 case "MapData":
-                    console.log("mapData");
+                    // console.log("mapData");
                     RENDERER.updateMap(message.data);
                     STORE.setInitializationStatus(true);
                     break;

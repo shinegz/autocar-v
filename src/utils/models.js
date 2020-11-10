@@ -1,9 +1,7 @@
 import * as THREE from "three";
-// const THREE = window.THREE = require('three')
+
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
-// require("three/examples/js/loaders/OBJLoader.js");
-// require("three/examples/js/loaders/MTLLoader.js");
 
 // The two loaders for material and object files, respectively.
 const mtlLoader = new MTLLoader();

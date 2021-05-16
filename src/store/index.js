@@ -9,6 +9,7 @@ import Monitor from "store/monitor";
 import TrafficSignal from "store/traffic_signal";
 
 class DreamviewStore {
+    @observable timestamp = 0;
 
     @observable isInitialized = false;
 
@@ -30,8 +31,13 @@ class DreamviewStore {
 
     @observable dimension = new Dimension(this.hmi, this.options);
 
+    @action updateTimestamp(newTimestamp) {
+        this.timestamp = newTimestamp;
+    }
+
     handleOptionToggle(option) {
         const oldShowMonitor = this.options.showMonitor;
+        // 工具栏显示标志位
         const oldShowTools = this.options.showTools;
         // const oldShowRouteEditingBar = this.options.showRouteEditingBar;
 
@@ -96,23 +102,17 @@ class DreamviewStore {
         }
     }
 
-    update(world, isNewMode) {
-        // if (isNewMode) {
-        //     this.options.resetOptions();
-        //     this.dimension.disableMonitor();
-        //     this.routeEditingManager.disableRouteEditing();
-        // }
+    update(world) {
 
-        // this.updateTimestamp(world.timestamp);
+        this.updateTimestamp(world.timestamp);
         this.updateModuleDelay(world);
 
         // const wasAutoMode = this.meters.isAutoMode;
-        // this.meters.update(world);
-        // this.handleDrivingModeChange(wasAutoMode, this.meters.isAutoMode);
+        this.meters.update(world);
 
         // this.monitor.update(world);
         // this.trafficSignal.update(world);
-        // this.hmi.update(world);
+        this.hmi.update(world);
         // console.log("update")
         
         // this.updateCustomizedToggles(world);
@@ -120,15 +120,10 @@ class DreamviewStore {
             // this.storyTellers.update(world);
             // this.planningData.update(world);
             
-            this.controlData.update(world, this.hmi.vehicleParam);
+            this.controlData.update(world);
             // this.latency.update(world);
         }
 
-        // if (this.hmi.inCarTeleopMode) {
-        //     this.setOptionStatus('showCarTeleopMonitor', true);
-        // } else if (this.hmi.inConsoleTeleopMode) {
-        //     this.setOptionStatus('showConsoleTeleopMonitor', true);
-        // }
     }
 
 }

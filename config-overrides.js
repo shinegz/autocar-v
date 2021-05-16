@@ -1,12 +1,13 @@
 const path = require("path");
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const {
     override,
     addDecoratorsLegacy,
     disableEsLint,
-    //addExternalBabelPlugins
     addWebpackModuleRule,
-    addWebpackResolve
+    addWebpackResolve,
+    addWebpackPlugin
   } = require("customize-cra");
   
 module.exports = {
@@ -35,7 +36,7 @@ module.exports = {
           },
         }
         // 模块中使用了es6特性，需要使用babel-loader
-      ]
+        ]
       }),
       // addWebpackModuleRule({
       //   test: require.resolve("three/examples/js/controls/OrbitControls.js"),
@@ -59,7 +60,14 @@ module.exports = {
             renderer: path.resolve(__dirname, "src/renderer"),
             assets: path.resolve(__dirname, "src/assets"),
             proto_bundle: path.resolve(__dirname, "src/proto_bundle"),
-      }
-    })
+            fonts: path.resolve(__dirname, "src/fonts")
+        }
+      }),
+      // addWebpackPlugin(new CopyWebpackPlugin(
+      //   {
+      //       from: '../node_modules/three/examples/fonts',
+      //       to: 'fonts',
+      //   }
+      // ))
     )
 };

@@ -33,7 +33,7 @@ export default class Routing {
             : coordinates.applyOffsetToArray(world.route);
         this.routePath = drawSegmentsFromPoints(
             points, 0xFF0000 /* red */, 10, 5, true, true, 0.6);
-        this.routePath.visible = STORE.options.showRouting;
+        // this.routePath.visible = STORE.options.showRouting;
         scene.add(this.routePath);
     }
 }

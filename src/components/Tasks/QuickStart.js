@@ -69,7 +69,6 @@ export default class QuickStarter extends React.Component {
         return (
             <div className="card">
                 <div className="card-header"><span>Quick Start</span></div>
-                {/* <div className="card-header"><span>快速启动</span></div> */}
                 <div className="card-content-column">
                     <CommandGroup disabled={lockTaskPanel} commands={this.setup} />
                     <CommandGroup disabled={lockTaskPanel} commands={this.reset} />

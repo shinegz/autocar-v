@@ -44,13 +44,17 @@ export default class Meters {
     @observable turnSignal = "";
 
     @action update(world) {
+        console.log("enter meters update");
+        console.log(world.autoDrivingCar);
         if (world.autoDrivingCar) {
             if (world.autoDrivingCar.throttlePercentage !== undefined) {
                 this.throttlePercent = roundToTens(world.autoDrivingCar.throttlePercentage);
+                console.log(this.throttlePercent);
             }
             
             if (world.autoDrivingCar.brakePercentage !== undefined) {
                 this.brakePercent = roundToTens(world.autoDrivingCar.brakePercentage);
+                console.log(this.brakePercent);
             }
 
             if (world.autoDrivingCar.speed !== undefined) {
@@ -69,14 +73,14 @@ export default class Meters {
                     world.autoDrivingCar.steeringAngle * 180.0 / Math.PI);
             }
 
-            if (world.autoDrivingCar.disengageType !== undefined) {
-                this.drivingMode = toDrivingMode(world.autoDrivingCar.disengageType);
-                this.isAutoMode = isAutoMode(world.autoDrivingCar.disengageType);
-            }
+            // if (world.autoDrivingCar.disengageType !== undefined) {
+            //     this.drivingMode = toDrivingMode(world.autoDrivingCar.disengageType);
+            //     this.isAutoMode = isAutoMode(world.autoDrivingCar.disengageType);
+            // }
 
-            if (world.autoDrivingCar.currentSignal !== undefined) {
-                this.turnSignal = world.autoDrivingCar.currentSignal;
-            }
+            // if (world.autoDrivingCar.currentSignal !== undefined) {
+            //     this.turnSignal = world.autoDrivingCar.currentSignal;
+            // }
         }
     }
 }

@@ -33,6 +33,22 @@
                                 "positionY": {
                                     "type": "double",
                                     "id": 7
+                                },
+                                "throttlePercentage": {
+                                    "type": "double",
+                                    "id": 8
+                                },
+                                "brakePercentage": {
+                                    "type": "double",
+                                    "id": 9
+                                },
+                                "steeringAngle": {
+                                    "type": "double",
+                                    "id": 10
+                                },
+                                "steeringPercentage": {
+                                    "type": "double",
+                                    "id": 11
                                 }
                             }
                         },
@@ -50,6 +66,10 @@
                                     "rule": "repeated",
                                     "type": "Object",
                                     "id": 3
+                                },
+                                "engageAdvice": {
+                                    "type": "string",
+                                    "id": 4
                                 }
                             }
                         }

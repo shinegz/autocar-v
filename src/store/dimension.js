@@ -153,7 +153,7 @@ export default class Dimension {
                 break;
             case MAP_SIZE.DEFAULT:
                 this.navigation.height = Math.min(sceneHeight * 0.5, 300);
-                this.navigation.width = Math.min(mainWidth * 0.3, 250);
+                this.navigation.width = Math.min(mainWidth * 0.4, 450);  // 0.3 250
                 break;
         }
     }

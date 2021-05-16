@@ -101,14 +101,16 @@ export function drawSegmentsFromPoints(
     return pathLine;
 }
 
-// export function drawBox(dimension, color, linewidth) {
-//     const geometry = new THREE.CubeGeometry(dimension.x, dimension.y, dimension.z);
-//     const material = new THREE.MeshBasicMaterial({color: color});
-//     const cube = new THREE.Mesh(geometry, material);
-//     const box = new THREE.BoxHelper(cube);
-//     box.material.linewidth = linewidth;
-//     return box;
-// }
+export function drawBox(dimension, color, linewidth) {
+    const geometry = new THREE.CubeGeometry(dimension.x, dimension.y, dimension.z);
+    const material = new THREE.MeshBasicMaterial({color: color});
+    const cube = new THREE.Mesh(geometry, material);
+    // const box = new THREE.BoxHelper(cube);
+    // 换成EdgesHelper后得到的盒子边框设置position才有效
+    const box = new THREE.EdgesHelper(cube);
+    box.material.linewidth = linewidth;
+    return box;
+}
 
 // export function drawDashedBox(dimension, color, linewidth, dashSize = 0.01, gapSize = 0.02) {
 //     let geometry = new THREE.CubeGeometry(dimension.x, dimension.y, dimension.z);
@@ -125,14 +127,14 @@ export function drawSegmentsFromPoints(
 //     return cube;
 // }
 
-// export function drawArrow(length, linewidth, conelength, conewidth, color) {
-//     const end = new THREE.Vector3(0, length, 0);
-//     const begin = new THREE.Vector3(0, 0, 0);
-//     const left = new THREE.Vector3(conewidth / 2, length - conelength, 0);
-//     const right = new THREE.Vector3(- conewidth / 2, length - conelength, 0);
-//     const arrow = drawSegmentsFromPoints([begin, end, left, end, right], color, linewidth, 1);
-//     return arrow;
-// }
+export function drawArrow(length, linewidth, conelength, conewidth, color) {
+    const end = new THREE.Vector3(0, length, 0);
+    const begin = new THREE.Vector3(0, 0, 0);
+    const left = new THREE.Vector3(conewidth / 2, length - conelength, 0);
+    const right = new THREE.Vector3(- conewidth / 2, length - conelength, 0);
+    const arrow = drawSegmentsFromPoints([begin, end, left, end, right], color, linewidth, 1);
+    return arrow;
+}
 
 // export function getShapeGeometryFromPoints(points, bezierCurve = false) {
 //     const shape = new THREE.Shape();

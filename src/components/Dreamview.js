@@ -11,7 +11,6 @@ import SideBar from 'components/SideBar';
 import HOTKEYS_CONFIG from "store/config/hotkeys.yml";
 import WS from 'store/websocket';
 
-// import Map from 'store/map/map.js'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {

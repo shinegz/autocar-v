@@ -149,7 +149,7 @@ export default class ControlData {
     updateAdcStatusGraph(graph, trajectory, adc, xFieldName, yFieldName) {
         const currentTimestamp = adc.timestampSec;
 
-        console.log("更新图表状态",graph)
+        console.log("更新图表状态", graph);
 
         // clean up data if needed
         const removeAllPoints = graph.target.length > 0 &&
@@ -165,6 +165,7 @@ export default class ControlData {
             graph.autoModeZone.shift();
         }
 
+        // 判断是否需要更新数据
         const hasNewData = graph.target.length === 0 ||
             currentTimestamp !== graph.target[graph.target.length - 1].t;
         if (hasNewData) {
@@ -206,7 +207,7 @@ export default class ControlData {
     }
 
     // 更新该实例对象的所有状态数据
-    update(world, vehicleParam) {
+    update(world) {
         const trajectory = world.planningTrajectory;
         const adc = world.autoDrivingCar;
         if (trajectory && adc) {

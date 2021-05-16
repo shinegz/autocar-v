@@ -46,7 +46,6 @@ export default class Options {
     @action resetOptions() {
         const options = {};
         for (const name in PARAMETERS.options) {
-            // console.log(PARAMETERS.options[name].default)
             let defaultValue = PARAMETERS.options[name].default;
             // if (OFFLINE_PLAYBACK && name === "showTasks") {
             //     defaultValue = false;
@@ -112,7 +111,7 @@ export default class Options {
             this[option] = !this[option];
         }
 
-        // 将其他按键状态失活
+        // 判断是否为侧边栏按键，若是，则将其他侧边栏按键状态失活
         if (this[option] && this.mainSideBarOptions.includes(option)) {
             for (const other of this.mainSideBarOptions) {
                 if (other !== option) {

@@ -11,7 +11,7 @@ export default class DrivingMode extends React.PureComponent {
     render() {
         const { drivingMode, isAutoMode } = this.props;
 
-        UTTERANCE.speakOnce(`Entering to ${drivingMode} mode`);
+        // UTTERANCE.speakOnce(`Entering to ${drivingMode} mode`);
 
         return (
             <div className={classNames({

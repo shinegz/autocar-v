@@ -18,10 +18,13 @@ export function UTMToWGS84(x, y) {
     return Proj4(UTM_TARGET, WGS84_TEXT, [x, y]);
 }
 
+
+// GCJ02（guojia cehui ju）：火星坐标系
 export function WGS84ToGCJ02(longitude, latitude) {
     return ChineseCoordinateConverter.transform([longitude, latitude], "WGS84", "GCJ02");
 }
 
+// BD09LL:百度经纬度坐标
 export function WGS84ToBD09LL(longitude, latitude) {
     if (outOfChina(longitude, latitude)) {
         return [longitude, latitude];

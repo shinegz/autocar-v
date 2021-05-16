@@ -22,12 +22,12 @@ self.addEventListener("message", event => {
                 // console.log(message)
             }
             break;
-        case "map":
-            message = mapMessage.toObject(
-                mapMessage.decode(new Uint8Array(data)),
-                {enums: String});
-            message.type = "MapData";
-            break;
+        // case "map":
+        //     message = mapMessage.toObject(
+        //         mapMessage.decode(new Uint8Array(data)),
+        //         {enums: String});
+        //     message.type = "MapData";
+        //     break;
         // case "point_cloud":
         //     if (typeof data === "string") {
         //         message = JSON.parse(data);

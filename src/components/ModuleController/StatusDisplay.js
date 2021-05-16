@@ -1,5 +1,5 @@
 import React from "react";
-// import { inject, observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 
 const StatusColorMapping = {
     OK: "#1C9063",

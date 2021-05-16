@@ -8,6 +8,7 @@ import Ground from "renderer/ground";
 import PlanningTrajectory from "renderer/trajectory.js";
 import Routing from "renderer/routing.js";
 import Map from "renderer/map_myself.js";
+import PerceptionObstacles from "renderer/obstacles.js";
 
 class Renderer {
     constructor() {
@@ -34,6 +35,8 @@ class Renderer {
         this.routing = new Routing();
 
         this.map = new Map();
+
+        this.perceptionObstacles = new PerceptionObstacles();
 
     }
 
@@ -181,6 +184,8 @@ class Renderer {
         // 更新局部规划轨迹点
         this.planningTrajectory.update(world, this.coordinates, this.scene);
         // this.routing.update(world, this.coordinates, this.scene);
+        // 感知障碍物的更新
+        this.perceptionObstacles.update(world, this.coordinates, this.scene);
     }
 
     updateMap(mapData) {

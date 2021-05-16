@@ -27,11 +27,11 @@ export default class StatusBar extends React.Component {
                 <Wheel steeringPercentage={meters.steeringPercentage}
                     steeringAngle={meters.steeringAngle}
                     turnSignal={meters.turnSignal} />
-                <div className="traffic-light-and-driving-mode">
+                {/* <div className="traffic-light-and-driving-mode">
                     <TrafficLightIndicator colorName={trafficSignal.color} />
                     <DrivingMode drivingMode={meters.drivingMode}
                         isAutoMode={meters.isAutoMode} />
-                </div>
+                </div> */}
             </div>
         );
     }

@@ -13,7 +13,7 @@ export default class HMI {
     @observable componentStatus = observable.map();
     @observable enableStartAuto = false;
 
-    utmZoneId = "49QGF";
+    utmZoneId = "";
 
     @computed get inNavigationMode() {
         return this.currentMode === "Navigation";
@@ -33,9 +33,9 @@ export default class HMI {
         //     this.utmZoneId = newStatus.utmZoneId;
         // }
 
-        if (newStatus.modes) {
-            this.modes = newStatus.modes.sort();
-        }
+        // if (newStatus.modes) {
+        //     this.modes = newStatus.modes.sort();
+        // }
         // if (newStatus.currentMode) {
         //     this.isCalibrationMode = (newStatus.currentMode.toLowerCase().includes('calibration'));
         //     if (this.currentMode !== newStatus.currentMode) {
